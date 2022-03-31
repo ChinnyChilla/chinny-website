@@ -1,10 +1,11 @@
 import React from 'react';
-
+import korone from '../../assets/korone.gif';
 function Home() {
   return (
     <div className="App">
 		<div className="body">
-			  <img src="https://cdn.discordapp.com/attachments/681574568112160768/957125235243614218/Inugami_Korone_Hololive_GIF_-_Inugami_Korone_Hololive_Cute_-_Discover__Share_GIFs.gif" alt="sus" width="250"></img>
+      <p>Hopefully this will be a better version of my previous website :D</p>
+			  <img src={korone} alt="stupid thing wont load" width="250"></img>
 		</div>
     </div>
   );

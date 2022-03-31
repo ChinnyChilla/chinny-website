@@ -18,7 +18,7 @@ class youtubeDownloader extends Component {
 			<div className="youtubeDownloader">
 				<form onSubmit={this.searchVideo}>
 					<input type="text" name="youtubeVideo" onChange={this.getValue} />
-					<button type="submit" >Submit</button>
+					<button type="submit">Submit</button>
 					</form>
 			
 			</div>
