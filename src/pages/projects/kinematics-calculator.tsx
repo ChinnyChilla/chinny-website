@@ -86,8 +86,10 @@ class KinematicsCalculator extends React.Component<Props, checks> {
         if (this.state.timeXYSame && isNaN(time_y) && !isNaN(time_x)) {
             time_y = time_x;
         };
-
-
+		let startedWithInital = false
+		let startedWithFinal = false
+		if (!isNaN(initalVel_y)) {startedWithInital = true}
+		if (!isNaN(finalVel_y)) {startedWithFinal = true}
         let exitFlag = false;
 
 
@@ -177,8 +179,31 @@ class KinematicsCalculator extends React.Component<Props, checks> {
                 alert("Insufficient information for y axis!");
                 exitFlag = true;
             } else if (emptySpaces_y === 0) {
-                exitFlag = true;
-            } else { solveCount_y = 0 };
+				if (Math.sign(finalVel_y - initalVel_y) !== Math.sign(acceleration_y)) {
+					var temp = 0;
+					if (startedWithFinal) {
+						temp = initalVel_y
+					} else if (startedWithInital) {
+						temp = finalVel_y
+					}
+					// eslint-disable-next-line @typescript-eslint/no-redeclare
+					var {initalVel_y, finalVel_y, averageVel_y, time_y, distance_y, acceleration_y,
+					// eslint-disable-next-line @typescript-eslint/no-redeclare
+						initalVel_x, finalVel_x, averageVel_x, time_x, distance_x, acceleration_x} = this.state
+					emptySpaces_y = 1
+					if (startedWithFinal) {
+						initalVel_y = temp*-1
+						startedWithFinal = false
+					} else if (startedWithInital) {
+						finalVel_y = temp*-1
+						startedWithInital = false
+					}
+				} else {
+					exitFlag = true;
+				}
+
+            }
+			solveCount_y = 0
         };
 
         // sees if you want to solve the x-axis
@@ -260,7 +285,7 @@ class KinematicsCalculator extends React.Component<Props, checks> {
 
         };
 
-        this.setState({
+        this.setState({...this.state, 
             initalVel_x: initalVel_x,
             finalVel_x: finalVel_x,
             averageVel_x: averageVel_x,
@@ -273,31 +298,38 @@ class KinematicsCalculator extends React.Component<Props, checks> {
             time_y: time_y,
             distance_y: distance_y,
             acceleration_y: acceleration_y
-        })
+        }, () => {
+			
+			const checkAmount = this.state.checkAnswerAmount
+			var eq1Problem = finalVel_y - (initalVel_y + acceleration_y * time_y)
+			var eq2Problem = distance_y - (initalVel_y * time_y + 0.5 * acceleration_y * time_y ** 2)
+			var eq3Problem = finalVel_y ** 2 - (initalVel_y * initalVel_y + 2 * acceleration_y * distance_y)
+			console.log(`Eq1 Problem offset ${eq1Problem}`)
+			console.log(`Eq2 Problem offset ${eq2Problem}`)
+			console.log(`Eq3 Problem offset ${eq3Problem}`)
+			var eq1Pass = false
+			var eq2Pass = false
+			var eq3Pass = false
+			if (Math.abs(eq1Problem) < checkAmount) {
+				eq1Pass = true
+			}
+			if (Math.abs(eq2Problem) < checkAmount) {
+				eq2Pass = true
+			}
+			if (Math.abs(eq3Problem) < checkAmount) {
+				eq3Pass = true
+			}
+			this.setState({...this.state,
+				eq1: eq1Problem,
+				eq1Pass: eq1Pass,
+				eq2: eq2Problem,
+				eq2Pass: eq2Pass,
+				eq3: eq3Problem,
+				eq3Pass: eq3Pass
+			})
+		})
         //Checks
-        const checkAmount = this.state.checkAnswerAmount
-        var eq1Problem = finalVel_y - (initalVel_y + acceleration_y * time_y)
-        var eq2Problem = distance_y - (initalVel_y * time_y + 0.5 * acceleration_y * time_y ** 2)
-        var eq3Problem = finalVel_y ** 2 - (initalVel_y * initalVel_y + 2 * acceleration_y * distance_y)
-        console.log(`Eq1 Problem offset ${eq1Problem}`)
-        console.log(`Eq2 Problem offset ${eq2Problem}`)
-        console.log(`Eq3 Problem offset ${eq3Problem}`)
-        if (Math.abs(eq1Problem) < checkAmount) {
-            this.setState({...this.state, eq1Pass: true})
-        } else {
-            this.setState({ ...this.state, eq1Pass: false, eq1: eq1Problem })
 
-        }
-        if (Math.abs(eq2Problem) < checkAmount) {
-            this.setState({ ...this.state, eq2Pass: true })
-        } else {
-            this.setState({ ...this.state, eq2Pass: false, eq2: eq2Problem })
-        }
-        if (Math.abs(eq3Problem) < checkAmount) {
-            this.setState({ ...this.state, eq3Pass: true })
-        } else {
-            this.setState({ ...this.state, eq3Pass: false, eq3: eq3Problem })
-        }
     }
     render() {
         return(
@@ -332,27 +364,28 @@ class KinematicsCalculator extends React.Component<Props, checks> {
                             {this.createNumberInput('distance_y')}
                             {this.createNumberInput('acceleration_y')}
                         </tr>
-                        <button>Calculate Answer</button>
+                        <button className='btn'>Calculate Answer</button>
                     </table>
                     <input className="toggle"type="checkbox" name="solveXAxis" checked={this.state.solveXAxis} onChange={(e) => this.setState({...this.state, solveXAxis: !this.state.solveXAxis})}/>
                     <label htmlFor="solveXAxis" onClick={(e) => this.setState({...this.state, solveXAxis: !this.state.solveXAxis})}>Solve X Axis?</label>
                     <input className="toggle"type="checkbox" disabled={!this.state.solveXAxis} name="timeXYSame"checked={this.state.timeXYSame}/>
                     <label htmlFor="timeXYSame" onClick={(e) => {if (this.state.solveXAxis) {this.setState({ ...this.state, timeXYSame: !this.state.timeXYSame })}}}>Time for both axis the same?</label>
                 </form>
+				<br />
                 <div id='checks'>
                     <table>
                         <th>Checks</th>
                         <tr>
                             <td>v<sub>f</sub> = v<sub>i</sub> + at</td>
-                            <td className="checkAnswer" id="eq1"> - </td>
+							<td className={`checkAnswer ${this.state.eq1Pass ? "pass" : "fail"}`} id="eq1"> <b>{this.state.eq1Pass ? "PASS" : "FAIL"}</b> </td>
                         </tr>
                         <tr>
                             <td>d = v<sub>i</sub>t + <sup>1</sup>&frasl;<sub>2</sub>at<sup>2</sup></td>
-                            <td className="checkAnswer" id="eq2"> - </td>
+							<td className={`checkAnswer ${this.state.eq2Pass ? "pass" : "fail"}`} id="eq2"> <b>{this.state.eq1Pass ? "PASS" : "FAIL"}</b> </td>
                         </tr>
                         <tr>
                             <td>v<sub>f</sub><sup>2</sup> = v<sub>i</sub><sup>2</sup> + 2ad</td>
-                            <td className="checkAnswer" id="eq3"> - </td>
+							<td className={`checkAnswer ${this.state.eq3Pass ? "pass" : "fail"}`} id="eq3"> <b>{this.state.eq1Pass ? "PASS" : "FAIL"}</b> </td>
                         </tr>
                     </table>
                     How close does it need to be? <input type="number" id="checkAnswerAmount" value={this.state.checkAnswerAmount} onChange={(e) => this.setState({ ...this.state, checkAnswerAmount: parseFloat(e.target.value)})} />

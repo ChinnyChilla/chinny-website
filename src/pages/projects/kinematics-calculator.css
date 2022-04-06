@@ -1,6 +1,6 @@
 h1 {
     text-align: center;
-    color: blue;
+    color: lightblue;
 }
 input[type="checkbox"].toggle {
     opacity: 0;
@@ -80,4 +80,39 @@ input[type="checkbox"].toggle:disabled+label::after {
 .axis {
     text-align: center;
     font-size: larger;
+}
+.pass {
+	background-color: #60cc60;
+	color: black
+}
+.fail {
+	background-color: red;
+}
+.pass b {
+	background-color: #60cc60;
+	color: black
+}
+.fail b {
+	background-color: red;
+}
+.btn {
+  -webkit-border-radius: 28;
+  -moz-border-radius: 28;
+  border-radius: 28px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 20px;
+  background: #34d968;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: #3cb0fd;
+  background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+  background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+  text-decoration: none;
 }
