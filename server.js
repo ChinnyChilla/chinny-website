@@ -1,8 +1,8 @@
 const express = require('express');
 const path = require('path')
 
-const ytdl = require('ytdl-core'
-)
+const ytdl = require('ytdl-core')
+
 const PORT = process.env.PORT || 80
 
 const app = express();
