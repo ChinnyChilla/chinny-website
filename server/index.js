@@ -3,7 +3,7 @@ const path = require('path')
 
 const ytdl = require('ytdl-core'
 )
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT || 80
 
 const app = express();
 
@@ -15,7 +15,10 @@ app.get('/api/getYoutubeData', async (req, res) => {
 
         console.log(info)
         res.send(JSON.stringify(info))
-    })
+    }).catch(err => {
+		res.status(400)
+		res.send(err)
+	})
 })
 
 app.get('*', (req, res) => {
