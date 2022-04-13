@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 80
 
 const app = express();
 
-app.use(express.static(path.resolve(__dirname, '../client/build')));
+app.use(express.static(path.resolve(__dirname, './client/build')));
 
 
 app.get('/api/getYoutubeData', async (req, res) => {
@@ -22,7 +22,7 @@ app.get('/api/getYoutubeData', async (req, res) => {
 })
 
 app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+  res.sendFile(path.resolve(__dirname, './client/build', 'index.html'));
 });
 
 app.listen(PORT, () => {

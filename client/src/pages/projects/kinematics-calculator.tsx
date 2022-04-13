@@ -337,6 +337,7 @@ class KinematicsCalculator extends React.Component<Props, checks> {
                 <h1>Kinematics Calculator</h1>
                 <form onSubmit={this.calculateAnswer}>
                     <table>
+                        <thead>
                         <tr>
                             <th>Axis</th>
                             <th>Inital Velocity (m/s)</th>
@@ -346,6 +347,8 @@ class KinematicsCalculator extends React.Component<Props, checks> {
                             <th>Displacement (m)</th>
                             <th>Acceleration (m/s/s)</th>
                         </tr>
+                        </thead>
+                        <tbody>
                         <tr>
                             <td className="axis">X</td>
                             {this.createNumberInput('initalVel_x')}
@@ -364,8 +367,9 @@ class KinematicsCalculator extends React.Component<Props, checks> {
                             {this.createNumberInput('distance_y')}
                             {this.createNumberInput('acceleration_y')}
                         </tr>
-                        <button className='btn'>Calculate Answer</button>
+                        </tbody>
                     </table>
+                        <button className='btn'>Calculate Answer</button>
                     <input className="toggle"type="checkbox" name="solveXAxis" checked={this.state.solveXAxis} onChange={(e) => this.setState({...this.state, solveXAxis: !this.state.solveXAxis})}/>
                     <label htmlFor="solveXAxis" onClick={(e) => this.setState({...this.state, solveXAxis: !this.state.solveXAxis})}>Solve X Axis?</label>
                     <input className="toggle"type="checkbox" disabled={!this.state.solveXAxis} name="timeXYSame"checked={this.state.timeXYSame}/>
@@ -374,7 +378,12 @@ class KinematicsCalculator extends React.Component<Props, checks> {
 				<br />
                 <div id='checks'>
                     <table>
+                        <thead>
+                        <tr>        
                         <th>Checks</th>
+                        </tr>
+                        </thead>
+                        <tbody>
                         <tr>
                             <td>v<sub>f</sub> = v<sub>i</sub> + at</td>
 							<td className={`checkAnswer ${this.state.eq1Pass ? "pass" : "fail"}`} id="eq1"> <b>{this.state.eq1Pass ? "PASS" : "FAIL"}</b> </td>
@@ -387,6 +396,7 @@ class KinematicsCalculator extends React.Component<Props, checks> {
                             <td>v<sub>f</sub><sup>2</sup> = v<sub>i</sub><sup>2</sup> + 2ad</td>
 							<td className={`checkAnswer ${this.state.eq3Pass ? "pass" : "fail"}`} id="eq3"> <b>{this.state.eq3Pass ? "PASS" : "FAIL"}</b> </td>
                         </tr>
+                        </tbody>
                     </table>
                     How close do the checks need to be? <input type="number" id="checkAnswerAmount" value={this.state.checkAnswerAmount} onChange={(e) => this.setState({ ...this.state, checkAnswerAmount: parseFloat(e.target.value)})} />
 
