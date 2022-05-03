@@ -25,9 +25,9 @@ jobs:
       - name: cd to client
         run: cd client
       
-      - name: Build packages
-        run: npm install
-
+      - name: Make build
+        run: npm run build
+        
       # Runs a single command using the runners shell
       - name: Run deploy command
         run: npm run deploy
