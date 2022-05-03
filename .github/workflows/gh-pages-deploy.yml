@@ -23,14 +23,9 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
       
-      - name: Make build
-        run: npm run build
-        
-      - name: Audit packages
-        run: npm audit fix
-        
-      - name: testing
-        run: npm run
+      - name: Install packages
+        run: npm run install-packages
+
       # Runs a single command using the runners shell
       - name: Run deploy command
         run: npm run gh-deploy
