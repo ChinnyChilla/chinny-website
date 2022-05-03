@@ -26,6 +26,12 @@ jobs:
       - name: Make build
         run: npm run build
         
+      - name: Audit packages
+        run: npm audit fix
+        
+      - name: testing
+        run: npm run
       # Runs a single command using the runners shell
       - name: Run deploy command
         run: npm run gh-deploy
+      
