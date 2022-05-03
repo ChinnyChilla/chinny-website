@@ -17,9 +17,9 @@
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ChinnyChilla/react-website/issues"
+    "url": "https://github.com/ChinnyChilla/chinny-website/issues"
   },
-  "homepage": "https://github.com/ChinnyChilla/react-website#readme",
+  "homepage": "https://github.com/ChinnyChilla/chinny-website#readme",
   "dependencies": {
     "express": "^4.17.3",
     "path": "^0.12.7",
