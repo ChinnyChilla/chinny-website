@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/react-website/static/css/main.0260fad1.css",
-    "main.js": "/react-website/static/js/main.78f20060.js",
-    "static/js/787.e403dcb9.chunk.js": "/react-website/static/js/787.e403dcb9.chunk.js",
-    "index.html": "/react-website/index.html",
-    "main.0260fad1.css.map": "/react-website/static/css/main.0260fad1.css.map",
-    "main.78f20060.js.map": "/react-website/static/js/main.78f20060.js.map",
-    "787.e403dcb9.chunk.js.map": "/react-website/static/js/787.e403dcb9.chunk.js.map"
+    "main.css": "/chinny-website/static/css/main.0260fad1.css",
+    "main.js": "/chinny-website/static/js/main.d120a290.js",
+    "static/js/787.e403dcb9.chunk.js": "/chinny-website/static/js/787.e403dcb9.chunk.js",
+    "index.html": "/chinny-website/index.html",
+    "main.0260fad1.css.map": "/chinny-website/static/css/main.0260fad1.css.map",
+    "main.d120a290.js.map": "/chinny-website/static/js/main.d120a290.js.map",
+    "787.e403dcb9.chunk.js.map": "/chinny-website/static/js/787.e403dcb9.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.0260fad1.css",
-    "static/js/main.78f20060.js"
+    "static/js/main.d120a290.js"
   ]
 }
