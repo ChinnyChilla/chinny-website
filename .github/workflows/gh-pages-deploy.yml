@@ -29,4 +29,6 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run deploy command
         run: npm run gh-deploy
+        env:
+          CI: false
       
