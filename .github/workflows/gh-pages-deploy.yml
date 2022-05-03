@@ -25,6 +25,8 @@ jobs:
       
       - name: Build
         run: npm run build
+        env:
+          CI: false
 
       # Runs a single command using the runners shell
       - name: Deploy to GitHub Pages
