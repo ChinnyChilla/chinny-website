@@ -77,3 +77,33 @@ li a:hover {
  .topNavButton:hover {
 	 background-color: green;
  }
+ @media screen and (max-width: 1030px) {
+
+	 nav li:not(:first-child) {
+		 display:none
+	 }
+	 nav li:is(:first-child) {
+		 display:block
+	 }
+	 .login {
+		 display:none
+	 }
+	.responsive.hidden {
+		display: none;
+	}
+	.responsive.shown {
+		posiiton: relative;
+		
+	}
+ }
+ @media screen and (min-width: 1030px) {
+	 nav li:is(:first-child) {
+		 display: none
+	 }
+	.responsive.hidden {
+		display: none;
+	}
+	.responsive.shown {
+		display:none
+	}
+ }

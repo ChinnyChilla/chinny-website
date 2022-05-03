@@ -6,8 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "sudo node server.js",
-    "build": "npm install && cd client && npm install && npm run build",
-    "heroku-postbuild": "npm run build"
+    "install-packages": "npm install && cd client && npm install",
+    "build": "cd client && npm run build",
+    "gh-deploy": "cd client && npm run deploy"
   },
   "repository": {
     "type": "git",
