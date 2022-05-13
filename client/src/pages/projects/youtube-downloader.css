@@ -1,19 +1,22 @@
 .youtubeDownloader {
 	color: white;
 	font-size: 20px;
-	
+	display: grid;
+	place-items: center;
+	margin-top: 200px;
 }
 
-button {
+.youtubeDownloader button {
 
-	color:white;
+	color:green;
 	font-size: 20px;
-	background-color: red;
+	background-color: lightgreen;
 	border-radius: 50%;
 }
-input {
-	color:white;
+.youtubeDownloader input {
+	color:black;
 	padding: 10px;
 	font-size: 20px;
+	width: 80%;
 }
  

@@ -16,7 +16,7 @@ class Navbar extends Component<Props, topNav> {
 	}
 	render() {
 		return (
-			<header>
+			<header className="topheader">
 				<h2 className="websiteTitle">Michael's Website</h2>
 				<nav>
 					<div className={this.state.responsive ? "responsive shown" : "responsive hidden"}>
@@ -26,7 +26,7 @@ class Navbar extends Component<Props, topNav> {
 						<h4>Contact Me</h4>
 					</div>
 					<ul>
-						<li className="icon"><a href="javascript:void(0)" className={this.state.responsive ? "responsive" : ""} onClick={() => { this.setState({ ...this.state, responsive: !this.state.responsive }) }}>&#9776;</a></li>
+						<li className="icon"><a className={this.state.responsive ? "responsive" : ""} onClick={() => { this.setState({ ...this.state, responsive: !this.state.responsive }) }}>&#9776;</a></li>
 						<li><Link to="/">Home</Link></li>
 						<li><Link to="/about">About</Link></li>
 						<li><Link to="/projects">Projects</Link></li>

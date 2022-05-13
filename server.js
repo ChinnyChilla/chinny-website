@@ -11,10 +11,11 @@ app.use(express.static(path.resolve(__dirname, './client/build')));
 
 
 app.get('/api/getYoutubeData', async (req, res) => {
+	console.log("Recieve api call for getYoutubeData")
     ytdl.getBasicInfo(req.query.link).then(info => {
 
         console.log(info)
-        res.send(JSON.stringify(info))
+        res.send({videoData: JSON.stringify(info)})
     }).catch(err => {
 		res.status(400)
 		res.send(err)

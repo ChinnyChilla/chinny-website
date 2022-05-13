@@ -2,6 +2,11 @@ h1 {
     text-align: center;
     color: lightblue;
 }
+input[type="number"] {
+	background-color: #555;
+	font-size: 18px;
+
+}
 input[type="checkbox"].toggle {
     opacity: 0;
     position: absolute;

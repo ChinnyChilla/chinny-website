@@ -3,6 +3,7 @@ import { Route, BrowserRouter, Routes, useParams } from 'react-router-dom';
 import Navbar from './components/topnav';
 
 import Home from './pages/main/Home'
+import About from './pages/main/About'
 import ProjectsPage from './pages/main/Projects';
 import NotFound from './components/NotFound'
 
@@ -10,6 +11,7 @@ import LoadingRing from './components/loadingCircle';
 
 class App extends Component {
 	public foundProject = false
+	public static readonly serverIP = "http://74.65.68.52"
 	public static readonly projectList = [
 		'Kinematics Calculator',
 		'Youtube Downloader',
@@ -59,6 +61,7 @@ class App extends Component {
 				<Routes>
 					<Route path="/" element={<Home />}/>
 					<Route path='/projects' element={<ProjectsPage />}/>
+					<Route path='/about' element={<About />}></Route>
 					<Route path='/projects/:projectName' element={<this.project/>}/>
 					<Route path="*" element={<NotFound />}/>
 				</Routes>

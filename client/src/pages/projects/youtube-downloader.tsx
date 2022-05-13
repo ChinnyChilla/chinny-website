@@ -1,16 +1,23 @@
 import React, { Component } from 'react'
+import App from '../../App'
 import './youtube-downloader.css'
-class youtubeDownloader extends Component {
-	public youtubeLink: string = ""
 
-	getValue = (event: { target: { value: any; }; }) => {
-		this.youtubeLink  = event.target.value;
+interface State {
+	youtubeLink: string
+}
+class youtubeDownloader extends Component {
+	public state: State = {
+		youtubeLink: ""
+	}
+
+	handleLinkChange = (event: { target: { value: any; }; }) => {
+		this.setState({youtubeLink: event.target.value})
 	}
 	searchVideo = (e: { preventDefault: () => void; }) => {
 		e.preventDefault()
-		console.log(this.youtubeLink)
-		fetch(`/api/getYoutubeData?link=${this.youtubeLink}`).then(res => {
-			res.json()
+		console.log(this.state.youtubeLink)
+		fetch(`${App.serverIP}/api/getYoutubeData?link=${this.state.youtubeLink}`).then(res => {
+			console.log(res)
 		}).then (data => {
 			console.log(data)
 		})
@@ -19,10 +26,10 @@ class youtubeDownloader extends Component {
 		return (
 			<div className="youtubeDownloader">
 				<form onSubmit={this.searchVideo}>
-					<input type="text" name="youtubeVideo" onChange={this.getValue} />
+					<h2>Insert youtube link below:</h2>
+					<input type="text" name="youtubeVideo" onChange={this.handleLinkChange} value={this.state.youtubeLink}/>
 					<button type="submit">Submit</button>
 					</form>
-			
 			</div>
 		)
 	}

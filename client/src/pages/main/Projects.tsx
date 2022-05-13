@@ -16,7 +16,11 @@ class ProjectsPage extends Component {
 
     public renderBlocks = () => {
         return this.projectList.map((project, index) => {
-            return this.createProjectBlock({name: project, link: project.replace(" ", "-").toLowerCase()})
+            return (
+				<div key={project}>
+					{this.createProjectBlock({name: project, link: project.replace(" ", "-").toLowerCase()})}
+				</div>
+			)
         })
     }
     async renderRoutes() {

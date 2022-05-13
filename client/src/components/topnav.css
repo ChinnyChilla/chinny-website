@@ -2,14 +2,14 @@
 	--header-background-color: #222;
 }
 
-* {
+.topheader * {
 	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
 	background-color: #333;
 }
 
-li, a, .topNavButton {
+.topheader li, a, .topNavButton {
 	font-family: "Montserrat", sans-serif;
 	font-weight: 500;
 	font-size: 16px;
@@ -18,23 +18,23 @@ li, a, .topNavButton {
 	
 }
 
-img {
+.topheader img {
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
 	width: 80%;
 }
 
-h2, ul, li, .login {
+.topheader h2, .topheader ul, .topheader li, .login {
 	color: white;
 	background-color: var(--header-background-color);
 }
 
-a:visited {
+.topheader a:visited {
 	text-decoration: none;
 }
 
-header {
+.topheader {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -42,25 +42,25 @@ header {
 	background-color: var(--header-background-color);
 }
 
-ul {
+.topheader ul {
 	list-style: none;
 }
 
-li {
+.topheader li {
 	display: inline-block;
 	padding: 0px 30px;
 	color: white;
 
 }
 
-li a {
+.topheader li a {
 	transition: all 0.3 ease 0s;
 	border: 2px solid #222;
 	padding: 5px 20px;
 	border-radius: 50px;
 }
 
-li a:hover {
+ .topheader li a:hover {
 	color: grey;
 	background-color: #444;
 }
@@ -92,8 +92,7 @@ li a:hover {
 		display: none;
 	}
 	.responsive.shown {
-		posiiton: relative;
-		
+		position: relative;
 	}
  }
  @media screen and (min-width: 1030px) {
