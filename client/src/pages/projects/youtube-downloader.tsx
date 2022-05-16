@@ -1,25 +1,34 @@
 import React, { Component } from 'react'
-import { json } from 'stream/consumers'
-import App from '../../App'
 import './youtube-downloader.css'
 
 interface State {
 	youtubeLink: string
+	videoDetails: any
+	errorVideo: boolean
 }
 class youtubeDownloader extends Component {
 	public state: State = {
-		youtubeLink: ""
+		youtubeLink: "",
+		videoDetails: [],
+		errorVideo: false
 	}
 
 	handleLinkChange = (event: { target: { value: any; }; }) => {
-		this.setState({youtubeLink: event.target.value})
+		this.setState({...this.state, youtubeLink: event.target.value, errorVideo: false})
 	}
 	searchVideo = (e: { preventDefault: () => void; }) => {
 		e.preventDefault()
 		console.log(this.state.youtubeLink)
-		fetch(`${App.serverIP}/api/getYoutubeData?link=${this.state.youtubeLink}`).then(res => res.json()).then(data => {
-			console.log(data)
-			console.log(JSON.parse(data))
+		fetch(`${process.env.REACT_APP_SERVERIP}/api/getYoutubeData?link=${this.state.youtubeLink}`).then(res => {
+			if (!res.ok) {
+				console.log("BAD REQUEST")
+				return this.setState({...this.state, errorVideo: true})
+			}
+			console.log(res)
+			res.json().then((data:any) => {
+				data = JSON.parse(data.videoData).videoDetails
+				this.setState({...this.state, videoDetails: this.state.videoDetails.push(data)})
+			})
 		})
 	}
 	render() {
@@ -29,6 +38,7 @@ class youtubeDownloader extends Component {
 					<h2>Insert youtube link below:</h2>
 					<input type="text" name="youtubeVideo" onChange={this.handleLinkChange} value={this.state.youtubeLink}/>
 					<button type="submit">Submit</button>
+					<span hidden={!this.state.errorVideo} className="yd-fail">This video was not found</span>
 					</form>
 			</div>
 		)
