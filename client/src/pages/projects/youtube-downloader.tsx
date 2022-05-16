@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { json } from 'stream/consumers'
 import App from '../../App'
 import './youtube-downloader.css'
 
@@ -16,10 +17,9 @@ class youtubeDownloader extends Component {
 	searchVideo = (e: { preventDefault: () => void; }) => {
 		e.preventDefault()
 		console.log(this.state.youtubeLink)
-		fetch(`${App.serverIP}/api/getYoutubeData?link=${this.state.youtubeLink}`).then(res => {
-			console.log(res)
-		}).then (data => {
+		fetch(`${App.serverIP}/api/getYoutubeData?link=${this.state.youtubeLink}`).then(res => res.json()).then(data => {
 			console.log(data)
+			console.log(JSON.parse(data))
 		})
 	}
 	render() {

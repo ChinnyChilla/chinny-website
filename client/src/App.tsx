@@ -11,7 +11,7 @@ import LoadingRing from './components/loadingCircle';
 
 class App extends Component {
 	public foundProject = false
-	public static readonly serverIP = "http://74.65.68.52"
+	public static readonly serverIP = process.env.SERVERIP
 	public static readonly projectList = [
 		'Kinematics Calculator',
 		'Youtube Downloader',
