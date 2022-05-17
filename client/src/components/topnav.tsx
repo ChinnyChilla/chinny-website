@@ -34,7 +34,7 @@ class Navbar extends Component<Props, topNav> {
 		
 					</ul>
 				</nav>
-				<a className="login" href="login"><button className="topNavButton">Login</button></a>
+				<Link to="/login"><button className="topNavButton">Login</button></Link>
 			</header>
 		);
 	}
