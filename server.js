@@ -1,14 +1,15 @@
 const express = require('express');
 const path = require('path')
 const ytdl = require('ytdl-core')
-const RateLimiter = require('express-rate-limiter')
+const rateLimit = require('express-rate-limit')
 const PORT = process.env.PORT || 80
 
 const app = express();
 
-var limiter = new RateLimiter({
+var limiter = rateLimit({
 	windowsMs: 1 * 60 * 1000,
-	max: 5
+	max: 5,
+	message: "too many api queries"
 })
 
 app.use(express.static(path.resolve(__dirname, './client/build')));
