@@ -6,7 +6,7 @@
 	margin-top: 200px;
 }
 
-.youtubeDownloader button {
+.youtubeDownloader #submit {
 
 	color:green;
 	font-size: 20px;
@@ -19,4 +19,55 @@
 	font-size: 20px;
 	width: 80%;
 }
- 
+.youtubeDownloader form {
+	width: 90%;
+	place-items: center;
+	flex: content
+}
+
+@keyframes spinner {
+	0% {
+		transform: translate3d(-50%, -50%, 0) rotate(0deg);
+	}
+	100% {
+		transform: translate3d(-50%, -50%, 0) rotate(360deg);
+	}
+}
+.spin::before {
+	animation: 1.5s linear infinite spinner;
+	animation-play-state: inherit;
+	border: solid 5px #cfd0d1;
+	border-bottom-color: #1c87c9;
+	border-radius: 50%;
+	content: "";
+	height: 40px;
+	width: 40px;
+	position: absolute;
+	margin-top: 70px;
+	left: 50%;
+	transform: translate3d(-50%, -50%, 0);
+	will-change: transform;
+}
+
+.section {
+	padding-right: 50px;
+	padding-top: 30px;
+	float: left;
+}
+/* Style buttons */
+.btnDownload {
+  background-color: DodgerBlue;
+  border: none;
+  color: white;
+  padding: 12px 30px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+/* Darker background on mouse-over */
+.btnDownload:hover {
+  background-color: RoyalBlue;
+}
+.error {
+	color: red
+}
