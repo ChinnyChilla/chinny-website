@@ -1,14 +1,18 @@
 const express = require('express');
 const path = require('path')
-const cors = require('cors')
 const ytdl = require('ytdl-core')
-
+const RateLimiter = require('express-rate-limiter')
 const PORT = process.env.PORT || 80
 
 const app = express();
 
+var limiter = new RateLimiter({
+	windowsMs: 1 * 60 * 1000,
+	max: 5
+})
+
 app.use(express.static(path.resolve(__dirname, './client/build')));
-app.use(cors())
+app.use(limiter)
 
 app.get('/api/getYoutubeData', async (req, res) => {
 	console.log("Recieve api call for getYoutubeData")
