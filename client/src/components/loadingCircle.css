@@ -43,7 +43,7 @@ body
   border-radius:50%;
   animation:animateC 2s linear infinite;
 }
-span
+#ringspan
 {
   display:block;
   position:absolute;
@@ -55,7 +55,7 @@ span
   transform-origin:left;
   animation:animate 2s linear infinite;
 }
-span:before
+#ringspan:before
 {
   content:'';
   position:absolute;
