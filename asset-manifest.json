@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/chinny-website/static/css/main.ab29aa19.css",
-    "main.js": "/chinny-website/static/js/main.39b65c35.js",
+    "main.js": "/chinny-website/static/js/main.6606d84a.js",
     "static/js/787.e403dcb9.chunk.js": "/chinny-website/static/js/787.e403dcb9.chunk.js",
     "index.html": "/chinny-website/index.html",
     "main.ab29aa19.css.map": "/chinny-website/static/css/main.ab29aa19.css.map",
-    "main.39b65c35.js.map": "/chinny-website/static/js/main.39b65c35.js.map",
+    "main.6606d84a.js.map": "/chinny-website/static/js/main.6606d84a.js.map",
     "787.e403dcb9.chunk.js.map": "/chinny-website/static/js/787.e403dcb9.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.ab29aa19.css",
-    "static/js/main.39b65c35.js"
+    "static/js/main.6606d84a.js"
   ]
 }
