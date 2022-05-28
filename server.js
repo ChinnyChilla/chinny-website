@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path')
 const ytdl = require('ytdl-core')
 const rateLimit = require('express-rate-limit')
-const PORT = process.env.PORT || 80
+const PORT = process.env.PORT || 443
 
 const app = express();
 
