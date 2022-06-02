@@ -1,7 +1,9 @@
 import React, {Component} from "react"
 import { Link, Route } from "react-router-dom";
 import './projectstyles.css'
+import {lazily} from "react-lazily"
 import App from '../../App'
+
 class ProjectsPage extends Component {
     public readonly projectList = App.projectList
     public createProjectBlock(props: any) {
@@ -26,7 +28,7 @@ class ProjectsPage extends Component {
     async renderRoutes() {
         return this.projectList.map(async (project: string, index) => {
             const projectName = project.replace(' ', "-").toLowerCase()
-            const element = React.lazy(() =>
+            const element = lazily(() =>
                 import(`../projects/${project}`)
             )
             return <Route path={`/projects/${projectName}`} element={element} />
