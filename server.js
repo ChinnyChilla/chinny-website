@@ -2,14 +2,22 @@ const express = require('express');
 const path = require('path')
 const ytdl = require('ytdl-core')
 const rateLimit = require('express-rate-limit')
-const PORT = process.env.PORT || 443
-
+const PORT = process.env.PORT || 443	
+const fs = require('fs')
+const https = require('https')
 const app = express();
 
 var limiter = rateLimit({
 	windowsMs: 1 * 60 * 1000,
 	max: 5,
 	message: "too many api queries"
+})
+
+const privateKey = fs.readFileSync('./.ssl/private_key.pem')
+const certificate = fs.readFileSync('./.ssl/certificate.pem')
+
+https.createServer({key: privateKey, cert: certificate}, app).listen(443, function() {
+	console.log(`Server listening on 443`)
 })
 
 app.use(express.static(path.resolve(__dirname, './client/build')));
@@ -33,20 +41,21 @@ app.get('/api/downloadYoutubeVideo', async (req, res) => {
 		var url = req.query.link;
 		console.log(url)
 		if(!ytdl.validateURL(url)) {
-			console.log("invalud url")
+			console.log("invalid url")
 			return res.sendStatus(400);
 		}
 		let title = 'audio'
 		title = (await ytdl.getBasicInfo(url)).videoDetails.title
-		ytdl(url, {
+		console.log(title	)
+		const video = await ytdl(url, {
 			format: 'mp3',
 			filter: 'audioonly',
 		}).on("response", response => {
 			res.setHeader("Content-Disposition", `attachment; filename=${title}.mp3`)
 			res.setHeader("Content-Length", response.headers["content-length"])
 			res.setHeader("Content-Type", "audio/mpeg")
+			video.pipe(res)
 		})
-		.pipe(res)
 
 	} catch (err) {
 		console.error(err);
@@ -56,7 +65,3 @@ app.get('/api/downloadYoutubeVideo', async (req, res) => {
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, './client/build', 'index.html'));
 });
-
-app.listen(PORT, () => {
-    console.log(`server listening on ${PORT}`)
-})

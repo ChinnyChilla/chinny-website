@@ -21,13 +21,12 @@ class App extends Component {
 	project = () => {
 		const params = useParams()
 		const Project = this.getProject(params.projectName!)
-		return <div>
+		return (<div>
 			<Suspense fallback={<LoadingRing />}>
 
 			<Project />
 			</Suspense>
-		</div>
-
+		</div>)
 	}
 	getProject(id: string) {
 		this.foundProject = true
