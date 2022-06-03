@@ -77,14 +77,21 @@
  .topNavButton:hover {
 	 background-color: green;
  }
- @media screen and (max-width: 1030px) {
+ .topNavButtonLink {
+	 background-color: var(--header-background-color);
+ }
+ @media screen and (max-width: 1038px) {
 
 	 nav li:not(:first-child) {
 		 display:none
 	 }
-	 nav li:is(:first-child) {
-		 display:block
+	 .topNavButton {
+		 display: none
 	 }
+	 nav li:is(:first-child) {
+		display: block;
+		right: 10%
+	}
 	 .login {
 		 display:none
 	 }
@@ -94,8 +101,11 @@
 	.responsive.shown {
 		position: relative;
 	}
+	.websiteTitle.hidden {
+		display: none;
+	}
  }
- @media screen and (min-width: 1030px) {
+ @media screen and (min-width: 1038px) {
 	 nav li:is(:first-child) {
 		 display: none
 	 }
@@ -105,4 +115,13 @@
 	.responsive.shown {
 		display:none
 	}
+ }
+ .responsive a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
  }

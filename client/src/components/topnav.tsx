@@ -17,13 +17,13 @@ class Navbar extends Component<Props, topNav> {
 	render() {
 		return (
 			<header className="topheader">
-				<h2 className="websiteTitle">Michael's Website</h2>
+				<h2 className={this.state.responsive ? "websiteTitle hidden" : "websiteTitle shown"}>Michael's Website</h2>
 				<nav>
 					<div className={this.state.responsive ? "responsive shown" : "responsive hidden"}>
-						<h4>Home</h4>
-						<h4>About</h4>
-						<h4>Projects</h4>
-						<h4>Contact Me</h4>
+						<h4><Link className="responsive link" to="/">Home</Link></h4>
+						<h4><Link className="responsive link" to="/about">About</Link></h4>
+						<h4><Link className="responsive link" to="/projects">Projects</Link></h4>
+						<h4><Link className="responsive link" to="/contact">Contact Me</Link></h4>
 					</div>
 					<ul>
 						<li className="icon"><a className={this.state.responsive ? "responsive" : ""} onClick={() => { this.setState({ ...this.state, responsive: !this.state.responsive }) }}>&#9776;</a></li>
@@ -31,10 +31,9 @@ class Navbar extends Component<Props, topNav> {
 						<li><Link to="/about">About</Link></li>
 						<li><Link to="/projects">Projects</Link></li>
 						<li><Link to="/contact">Contact Me</Link></li>
-		
 					</ul>
 				</nav>
-				<Link to="/login"><button className="topNavButton">Login</button></Link>
+				<Link to="/login" className="topNavButtonLink"><button className="topNavButton" >Login</button></Link>
 			</header>
 		);
 	}
