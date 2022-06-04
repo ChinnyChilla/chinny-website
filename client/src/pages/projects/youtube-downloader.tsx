@@ -31,7 +31,8 @@ class youtubeDownloader extends Component {
 					reject("error")
 				}
 				res.json().then((data:any) => {
-					data = JSON.parse(data.videoData).videoDetails
+					data = JSON.parse(data.videoData)
+					console.log(data)
 					resolve(data)
 				})
 			})
@@ -42,7 +43,6 @@ class youtubeDownloader extends Component {
 		this.setState({...this.state, showVideo: (<div className="spin">Fetching Video</div>)})
 		this.searchVideo(e).then(async (res: any) => {
 			await this.setState({ ...this.state, videoDetails: res })
-			console.log(this.state.videoDetails)
 			this.setState({ ...this.state, showVideo: (<div>
 				<div className="section">
 				<h4 id="videoTitle">{res.title}</h4>

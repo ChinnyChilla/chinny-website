@@ -2,7 +2,6 @@ const express = require('express');
 const path = require('path')
 const ytdl = require('ytdl-core')
 const rateLimit = require('express-rate-limit')
-const PORT = process.env.PORT || 443	
 const fs = require('fs')
 const https = require('https')
 const app = express();
@@ -26,7 +25,7 @@ app.use(limiter)
 app.get('/api/getYoutubeData', async (req, res) => {
 	console.log("Recieve api call for getYoutubeData")
     ytdl.getBasicInfo(req.query.link).then(info => {
-        res.send({videoData: JSON.stringify(info)})
+        res.send({videoData: JSON.stringify(info.videoDetails)})
 		console.log("SUCCESS")
     }).catch(err => {
 		res.status(400)
