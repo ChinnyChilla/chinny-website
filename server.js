@@ -4,17 +4,19 @@ const ytdl = require('ytdl-core')
 const rateLimit = require('express-rate-limit')
 const fs = require('fs')
 const https = require('https')
+const random = require('random-token')
+require('dotenv').config()
 const app = express();
 
 var limiter = rateLimit({
 	windowsMs: 1 * 60 * 1000,
-	max: 5,
+	max: 30,
 	message: "too many api queries"
 })
 
 const privateKey = fs.readFileSync('./.ssl/private_key.pem')
 const certificate = fs.readFileSync('./.ssl/certificate.pem')
-
+var serverQueues = new Map();
 https.createServer({key: privateKey, cert: certificate}, app).listen(443, function() {
 	console.log(`Server listening on 443`)
 })
@@ -23,7 +25,6 @@ app.use(express.static(path.resolve(__dirname, './client/build')));
 app.use(limiter)
 
 app.get('/api/getYoutubeData', async (req, res) => {
-	console.log("Recieve api call for getYoutubeData")
     ytdl.getBasicInfo(req.query.link).then(info => {
         res.send({videoData: JSON.stringify(info.videoDetails)})
 		console.log("SUCCESS")
@@ -35,7 +36,6 @@ app.get('/api/getYoutubeData', async (req, res) => {
 })
 
 app.get('/api/downloadYoutubeVideo', async (req, res) => {
-	console.log("Recieve api call for downloadYoutubeVideo")
 	try {
 		var url = req.query.link;
 		console.log(url)
@@ -60,6 +60,27 @@ app.get('/api/downloadYoutubeVideo', async (req, res) => {
 		console.error(err);
 	}
 	console.log("Request over")
+})
+app.get('/api/getQueue', async (req, res) => {
+	const id = req.query.id
+	if (!serverQueues.get(id)) {return res.sendStatus(404)}
+	res.status(200)
+	res.send(serverQueues.get(id))
+})
+app.post('/api/updateQueue', async (req, res) => {
+	console.log("Recieve request to update")
+	if (req.query.token !== process.env.QUEUE_TOKEN) {return res.sendStatus(401)}
+	if (!req.query.id || !serverQueues.get(req.query.id)) {return res.sendStatus(404)}
+	serverQueues.set(req.query.id, req.query.queue)
+	return res.sendStatus(200)
+})
+app.post('/api/createQueueLink', async (req, res) => {
+	if (req.query.token !== process.env.QUEUE_TOKEN) {return res.sendStatus(401)}
+	const id = random(16)
+	const queue = req.query.queue
+	serverQueues.set(id, queue)
+	res.status(201)
+	return res.send({id: id})
 })
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, './client/build', 'index.html'));

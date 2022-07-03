@@ -2,7 +2,7 @@
   "name": "react-website",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://localhost",
+  "homepage": "http://localhost:3000",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.3",
@@ -18,7 +18,7 @@
     "typescript": "^4.6.2",
     "web-vitals": "^2.1.4"
   },
-  "proxy": "http://127.0.0.1",
+  "proxy": "https://localhost:443",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
