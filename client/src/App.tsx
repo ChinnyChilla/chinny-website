@@ -14,7 +14,7 @@ class App extends Component {
 	public static readonly projectList = [
 		'Kinematics Calculator',
 		'Youtube Downloader',
-		'testing'
+		'testing',
 	]
 	public readonly testing = App.projectList
 

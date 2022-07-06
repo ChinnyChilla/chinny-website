@@ -26,7 +26,8 @@
     "express": "^4.17.3",
     "express-rate-limit": "^6.4.0",
     "path": "^0.12.7",
-    "random-token": "^0.0.8",
+    "validator": "^13.7.0",
+    "ws": "^8.8.0",
     "ytdl-core": "^4.11.0"
   },
   "devDependencies": {

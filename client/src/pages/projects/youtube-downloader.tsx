@@ -26,7 +26,7 @@ class youtubeDownloader extends Component {
 	}
 	searchVideo = (e: { preventDefault: () => void; }) => {
 		return new Promise((resolve, reject) => {
-			fetch(`/api/getYoutubeData?link=${this.state.youtubeLink}`).then(res => {
+			fetch(`/api/get/YoutubeData?link=${this.state.youtubeLink}`).then(res => {
 				if (!res.ok) {
 					reject("error")
 				}
@@ -52,7 +52,7 @@ class youtubeDownloader extends Component {
 					<a href={`${this.state.videoDetails.video_url}`}><img alt="video thumbnail" src={res.thumbnails[0].url}></img></a>
 				</div>
 			
-				<a href={`/api/downloadYoutubeVideo?link=${this.state.youtubeLink}`} download={this.state.videoDetails.title + ".mp3"}><button className="btnDownload">Download</button></a>
+				<a href={`/api//getdownloadYoutubeVideo?link=${this.state.youtubeLink}`} download={this.state.videoDetails.title + ".mp3"}><button className="btnDownload">Download</button></a>
 				</div>) })
 		}).catch(err => {
 			this.setState({ ...this.state, showVideo: (<div className="error">Video not found</div>) })

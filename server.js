@@ -4,30 +4,37 @@ const ytdl = require('ytdl-core')
 const rateLimit = require('express-rate-limit')
 const fs = require('fs')
 const https = require('https')
-const random = require('random-token')
+const ws = require('ws')
+const validator = require('validator')
 require('dotenv').config()
 const app = express();
 
 var limiter = rateLimit({
-	windowsMs: 1 * 60 * 1000,
-	max: 30,
+	
+	windowsMs: 60000,
+	max: 10,
 	message: "too many api queries"
 })
 
 const privateKey = fs.readFileSync('./.ssl/private_key.pem')
 const certificate = fs.readFileSync('./.ssl/certificate.pem')
+
 var serverQueues = new Map();
-https.createServer({key: privateKey, cert: certificate}, app).listen(443, function() {
-	console.log(`Server listening on 443`)
+
+const server = https.createServer({key: privateKey, cert: certificate}, app)
+
+var wss = new ws.Server({server: server, path: "/music-queues", host:"0.0.0.0"})
+
+server.listen(process.env.PORT || 443, function() {
+	console.log(`Server listening on ${server.address().port}`)
 })
 
 app.use(express.static(path.resolve(__dirname, './client/build')));
-app.use(limiter)
+app.use('/api/get', limiter)
 
-app.get('/api/getYoutubeData', async (req, res) => {
+app.get('/api/get/YoutubeData', async (req, res) => {
     ytdl.getBasicInfo(req.query.link).then(info => {
         res.send({videoData: JSON.stringify(info.videoDetails)})
-		console.log("SUCCESS")
     }).catch(err => {
 		res.status(400)
 		res.send(err)
@@ -35,12 +42,11 @@ app.get('/api/getYoutubeData', async (req, res) => {
 	})
 })
 
-app.get('/api/downloadYoutubeVideo', async (req, res) => {
+app.get('/api/get/downloadYoutubeVideo', async (req, res) => {
 	try {
 		var url = req.query.link;
 		console.log(url)
 		if(!ytdl.validateURL(url)) {
-			console.log("invalid url")
 			return res.sendStatus(400);
 		}
 		let title = 'audio'
@@ -59,29 +65,29 @@ app.get('/api/downloadYoutubeVideo', async (req, res) => {
 	} catch (err) {
 		console.error(err);
 	}
-	console.log("Request over")
 })
-app.get('/api/getQueue', async (req, res) => {
-	const id = req.query.id
-	if (!serverQueues.get(id)) {return res.sendStatus(404)}
-	res.status(200)
-	res.send(serverQueues.get(id))
+app.post('/api/post/updateQueue', async (req, res) => {
+
 })
-app.post('/api/updateQueue', async (req, res) => {
-	console.log("Recieve request to update")
-	if (req.query.token !== process.env.QUEUE_TOKEN) {return res.sendStatus(401)}
-	if (!req.query.id || !serverQueues.get(req.query.id)) {return res.sendStatus(404)}
-	serverQueues.set(req.query.id, req.query.queue)
-	return res.sendStatus(200)
+wss.on('connection', (ws) => {
+	ws.isAlive = true;
+
+	ws.on('pong', () => {
+		ws.isAlive = true;
+	})
+	ws.on('message', (msg) => {
+		ws.send(`Hello! you said ${msg}`)
+	})
+	ws.send("Websocket connected")
 })
-app.post('/api/createQueueLink', async (req, res) => {
-	if (req.query.token !== process.env.QUEUE_TOKEN) {return res.sendStatus(401)}
-	const id = random(16)
-	const queue = req.query.queue
-	serverQueues.set(id, queue)
-	res.status(201)
-	return res.send({id: id})
-})
+
+setInterval(() => {
+	wss.clients.forEach(ws => {
+		if (!ws.isAlive) return ws.terminate();
+		ws.isAlive = false
+		ws.ping(null, false, true)
+	})
+}, 10000)
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, './client/build', 'index.html'));
 });
