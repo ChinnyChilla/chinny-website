@@ -25,6 +25,7 @@
     "dotenv": "^16.0.1",
     "express": "^4.17.3",
     "express-rate-limit": "^6.4.0",
+    "parse-url": "^7.0.2",
     "path": "^0.12.7",
     "validator": "^13.7.0",
     "ws": "^8.8.0",
