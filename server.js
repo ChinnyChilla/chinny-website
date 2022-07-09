@@ -71,7 +71,7 @@ app.get('/api/get/downloadYoutubeVideo', async (req, res) => {
 		console.error(err);
 	}
 })
-app.post('/api/post/updateQueue', jsonParser, async (req, res) => {
+app.post('/api/post/updateQueue', async (req, res) => {
 	if (req.body.token != process.env.QUEUE_TOKEN) return res.sendStatus(401)
 	if (!req.body.id || !validator.isInt(req.body.id) || !req.body.queue) return res.sendStatus(400)
 	const queue = req.body.queue
@@ -79,7 +79,6 @@ app.post('/api/post/updateQueue', jsonParser, async (req, res) => {
 		queue.firstTrack = serverQueues.get(req.body.id).firstTrack
 		queue.timeSongFinish = serverQueues.get(req.body.id).timeSongFinish
 	}
-	console.log(queue)
 	serverQueues.set(req.body.id, queue)
 	
 	res.sendStatus(200)
@@ -89,29 +88,24 @@ app.post('/api/post/updateQueue', jsonParser, async (req, res) => {
 	})
 })
 wss.on('connection', (ws, inc_req) => {
-	console.log(inc_req.url)
 	const params = parseUrl("http://testing.com" + inc_req.url).query
-	if (!params) {
+	if (!params.id) {
 		ws.send(JSON.stringify({category: 'error', data: 'Invalid id'}))
 		setTimeout(() => {ws.terminate()}, 1)
 		return
 	}
 	ws.isAlive = true;
 	ws.queueId = params.id
-	ws.invalidId = false
 	ws.on('pong', () => {
 		ws.isAlive = true;
 	})
 	ws.send(JSON.stringify({category: 'handshake', data: "Connection successful"}))
 	if (!validator.isInt(params.id)) {
-		ws.invalidId = true
 		ws.send(JSON.stringify({category: 'error', data: 'Invalid id'}))
 		setTimeout(() => {ws.terminate()}, 1)
 		return
 	}
-	if (!ws.invalidId) {
-		ws.send(JSON.stringify({category: 'queue', data: serverQueues.get(ws.queueid)}))
-	}
+	ws.send(JSON.stringify({category: 'queue', data: serverQueues.get(ws.queueId)}))
 })
 
 setInterval(() => {

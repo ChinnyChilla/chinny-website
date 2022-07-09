@@ -1,31 +1,47 @@
 import React, { Component } from 'react'
 import { useParams } from 'react-router-dom'
 
+interface Props {
+	params: any
+}
 function withParams(Component: any) {
 	return (props: any) => <Component {...props} params={useParams()} />;
 }
-class MusicQueue extends Component {
+class MusicQueue extends Component<Props> {
 	public state: any = {
-		queue: undefined
+		queue: {}
 	}
 	public serverid = this.props.params.serverid
-	ws = new WebSocket(`ws:/localhost:3000/music-queues/${this.serverid}`)
+	ws = new WebSocket(`wss://localhost:443/music-queues?id=${this.serverid}`)
+	
 	componentDidMount() {
-		console.log(this.props.params)
 		this.ws.onopen = () => {
 			console.log("Connected to server")
 		}
 		this.ws.onmessage = (evt) => {
-			const message = JSON.parse(evt.data).queue
-			console.log(message)
-			this.setState({queue: message})
+			const message = JSON.parse(evt.data)
+			if (message.category === "queue") {
+				this.setState({...this.state, queue: message.data})
+				console.log("Current state")
+				console.log(this.state)
+			}
+
+		}
+		this.ws.onerror = (err) => {
+			console.error(err)
+		}
+		this.ws.onclose = (evt) => {
+			console.log("Closed")
+			console.log(evt)
 		}
 	}
-	renderFirstTrack(track: any) {
-		return(
+	renderFirstTrack(queue: any) {
+		console.log(this.state.queue)
+		const track = queue.firstTrack
+		return (
 			<div>
 				<div id="currently-playing">
-					<div id='song-name-1'><span>{track.name}</span></div>
+					<div id='song-name-1'><span>{track.title}</span></div>
 					<div id='progress-bar'></div>
 					<div className='column left'>
 						<div id='info-box'>
@@ -54,10 +70,29 @@ class MusicQueue extends Component {
 			</div>
 		)
 	}
+	componentDidUpdate(prevProp: Props, prevState: any) {
+		if (prevState.queue !== this.state.queue) {
+			console.log("Queue changed")
+		}
+	}
+	
+	renderTitle() {
+		if (this.state.queue?.channelName === undefined) { return <div id="title">No Current Queue in this Server</div>}
+		
+		return <div id="title">Music Queue for {this.state.queue.channelName}</div>
+
+	}
 	render() {
 		return(
 			<div>
-				<div id="Title"></div>
+				<div>
+
+				{this.renderTitle()}
+				<div>
+
+				{/* {this.renderFirchstTrack(this.state.queue)} */}
+				</div>
+				</div>
 			</div>
 		)
 	}
