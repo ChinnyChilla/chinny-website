@@ -6,6 +6,7 @@ import Home from './pages/main/Home'
 import About from './pages/main/About'
 import ProjectsPage from './pages/main/Projects';
 import NotFound from './components/NotFound'
+import MusicQueue from './pages/projects/music-queues';
 
 import LoadingRing from './components/loadingCircle';
 
@@ -61,6 +62,7 @@ class App extends Component {
 					<Route path='/projects' element={<ProjectsPage />}/>
 					<Route path='/about' element={<About />}></Route>
 					<Route path='/projects/:projectName' element={<this.project/>}/>
+					<Route path='music-queues/:serverid' element={<MusicQueue />}></Route>
 					<Route path="*" element={<NotFound />}/>
 				</Routes>
 			</BrowserRouter>

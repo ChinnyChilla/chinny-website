@@ -7,8 +7,12 @@ const https = require('https')
 const ws = require('ws')
 const validator = require('validator');
 const parseUrl = require('parse-url')
+const bodyParser = require('body-parser')
 require('dotenv').config()
 const app = express();
+
+var jsonParser = bodyParser.json()
+app.use(express.json({limit: '50mb'}));
 
 var limiter = rateLimit({
 	
@@ -67,20 +71,31 @@ app.get('/api/get/downloadYoutubeVideo', async (req, res) => {
 		console.error(err);
 	}
 })
-app.post('/api/post/updateQueue', async (req, res) => {
-	if (req.query.token !== procces.env.QUEUE_TOKEN) return res.sendStatus(401)
-	if (!req.query.id || !validator.isInt(req.query.id) || !req.query.queue) return res.sendStatus(400)
-	const queue = JSON.parse(req.query.queue)
-	serverQueues.set(req.query.id, queue)
+app.post('/api/post/updateQueue', jsonParser, async (req, res) => {
+	if (req.body.token != process.env.QUEUE_TOKEN) return res.sendStatus(401)
+	if (!req.body.id || !validator.isInt(req.body.id) || !req.body.queue) return res.sendStatus(400)
+	const queue = req.body.queue
+	if (!queue.firstTrack) {
+		queue.firstTrack = serverQueues.get(req.body.id).firstTrack
+		queue.timeSongFinish = serverQueues.get(req.body.id).timeSongFinish
+	}
+	console.log(queue)
+	serverQueues.set(req.body.id, queue)
 	
 	res.sendStatus(200)
 	wss.clients.forEach(ws => {
-		if (ws.queueId != req.query.id) return
+		if (ws.queueId != req.body.id) return
 		ws.send(JSON.stringify({category: 'queue', data: queue}))
 	})
 })
 wss.on('connection', (ws, inc_req) => {
+	console.log(inc_req.url)
 	const params = parseUrl("http://testing.com" + inc_req.url).query
+	if (!params) {
+		ws.send(JSON.stringify({category: 'error', data: 'Invalid id'}))
+		setTimeout(() => {ws.terminate()}, 1)
+		return
+	}
 	ws.isAlive = true;
 	ws.queueId = params.id
 	ws.invalidId = false
@@ -92,6 +107,7 @@ wss.on('connection', (ws, inc_req) => {
 		ws.invalidId = true
 		ws.send(JSON.stringify({category: 'error', data: 'Invalid id'}))
 		setTimeout(() => {ws.terminate()}, 1)
+		return
 	}
 	if (!ws.invalidId) {
 		ws.send(JSON.stringify({category: 'queue', data: serverQueues.get(ws.queueid)}))

@@ -1,11 +1,26 @@
 import React, { Component } from 'react'
+import { useParams } from 'react-router-dom'
 
-
+function withParams(Component: any) {
+	return (props: any) => <Component {...props} params={useParams()} />;
+}
 class MusicQueue extends Component {
 	public state: any = {
 		queue: undefined
 	}
-
+	public serverid = this.props.params.serverid
+	ws = new WebSocket(`ws:/localhost:3000/music-queues/${this.serverid}`)
+	componentDidMount() {
+		console.log(this.props.params)
+		this.ws.onopen = () => {
+			console.log("Connected to server")
+		}
+		this.ws.onmessage = (evt) => {
+			const message = JSON.parse(evt.data).queue
+			console.log(message)
+			this.setState({queue: message})
+		}
+	}
 	renderFirstTrack(track: any) {
 		return(
 			<div>
@@ -49,4 +64,4 @@ class MusicQueue extends Component {
 
 }
 
-export default MusicQueue
+export default withParams(MusicQueue)
