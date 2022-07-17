@@ -7,13 +7,15 @@ const https = require('https')
 const ws = require('ws')
 const validator = require('validator');
 const parseUrl = require('parse-url')
-const bodyParser = require('body-parser')
+const randomToken = require('random-token')
 require('dotenv').config()
 const app = express();
 
-var jsonParser = bodyParser.json()
 app.use(express.json({limit: '50mb'}));
 
+const queueToken = randomToken(16)
+console.log('Queue token is:')
+console.log(queueToken)
 var limiter = rateLimit({
 	
 	windowsMs: 60000,
@@ -72,14 +74,16 @@ app.get('/api/get/downloadYoutubeVideo', async (req, res) => {
 	}
 })
 app.post('/api/post/updateQueue', async (req, res) => {
-	if (req.body.token != process.env.QUEUE_TOKEN) return res.sendStatus(401)
+	if (req.body.token != queueToken) return res.sendStatus(401)
 	if (!req.body.id || !validator.isInt(req.body.id) || !req.body.queue) return res.sendStatus(400)
 	const queue = req.body.queue
-	if (!queue.firstTrack) {
+	if (req.body.action == 'delete') {
+		serverQueues.set(req.body.id, undefined)
+	} else if (!queue.firstTrack) {
 		queue.firstTrack = serverQueues.get(req.body.id).firstTrack
 		queue.timeSongFinish = serverQueues.get(req.body.id).timeSongFinish
-	}
-	serverQueues.set(req.body.id, queue)
+		serverQueues.set(req.body.id, queue)
+	} else {serverQueues.set(req.body.id, queue)}
 	
 	res.sendStatus(200)
 	wss.clients.forEach(ws => {

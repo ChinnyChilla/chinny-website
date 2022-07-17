@@ -9,14 +9,17 @@ function withParams(Component: any) {
 	return (props: any) => <Component {...props} params={useParams()} />;
 }
 class MusicQueue extends Component<Props> {
+	public timer:any 
 	public state: any = {
 		queue: {},
 		html: null
 	}
 	public serverid = this.props.params.serverid
-	ws = new WebSocket(`ws://localhost:3000/music-queues?id=${this.serverid}`)
-	
+	ws = new WebSocket(`wss://localhost:3000/music-queues?id=${this.serverid}`)
+
 	componentDidMount() {
+
+		
 		this.ws.onopen = () => {
 			console.log("Connected to server")
 		}
@@ -34,9 +37,29 @@ class MusicQueue extends Component<Props> {
 		this.ws.onclose = (evt) => {
 			console.log("Closed")
 			console.log(evt)
+
 		}
+		this.timer = setInterval(() => {
+			try {
+				const timeNow = new Date();
+				if (this.state.queue.paused) {
+					const percent = this.state.queue.currentStreamTime / this.state.queue.firstTrack.durationMS
+					return document.documentElement.style.setProperty('--progress-percent', percent.toString())
+				}
+				const difference = Math.abs(this.state.queue.timeSongFinish - timeNow.getTime())
+				const str = (Math.abs(difference - this.state.queue.firstTrack.durationMS) / this.state.queue.firstTrack.durationMS).toString()
+				document.documentElement.style.setProperty('--progress-percent', str)
+			}
+			catch {
+				console.log("No queue")
+			}
+		}, 100)
+	}
+	componentWillUnmount() {
+		clearInterval(this.timer)
 	}
 	renderQueue(queue: any) {
+		if (!queue || queue.deleted) {return this.setState({...this.state, html: null})}
 		const track = queue.firstTrack
 		this.setState({
 			...this.state, html: (<div>
@@ -44,6 +67,7 @@ class MusicQueue extends Component<Props> {
 					<div className='progress-bar'></div>
 					<div id='song-name-1'><span>{track.title}</span></div>
 					<div className='column left'>
+						<div className='thumbnail-1'><img src={track.thumbnail} alt="thumbnail" width="100" height="100"/></div>
 						<div id='info-box'>
 							<div className='column left grid'>
 								<div className='row'>
