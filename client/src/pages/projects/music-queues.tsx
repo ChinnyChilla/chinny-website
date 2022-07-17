@@ -1,18 +1,20 @@
 import React, { Component } from 'react'
 import { useParams } from 'react-router-dom'
-
+import './music-queues.css'
 interface Props {
 	params: any
+	queueRef: any
 }
 function withParams(Component: any) {
 	return (props: any) => <Component {...props} params={useParams()} />;
 }
 class MusicQueue extends Component<Props> {
 	public state: any = {
-		queue: {}
+		queue: {},
+		html: null
 	}
 	public serverid = this.props.params.serverid
-	ws = new WebSocket(`wss://localhost:443/music-queues?id=${this.serverid}`)
+	ws = new WebSocket(`ws://localhost:3000/music-queues?id=${this.serverid}`)
 	
 	componentDidMount() {
 		this.ws.onopen = () => {
@@ -25,7 +27,6 @@ class MusicQueue extends Component<Props> {
 				console.log("Current state")
 				console.log(this.state)
 			}
-
 		}
 		this.ws.onerror = (err) => {
 			console.error(err)
@@ -35,14 +36,13 @@ class MusicQueue extends Component<Props> {
 			console.log(evt)
 		}
 	}
-	renderFirstTrack(queue: any) {
-		console.log(this.state.queue)
+	renderQueue(queue: any) {
 		const track = queue.firstTrack
-		return (
-			<div>
+		this.setState({
+			...this.state, html: (<div>
 				<div id="currently-playing">
+					<div className='progress-bar'></div>
 					<div id='song-name-1'><span>{track.title}</span></div>
-					<div id='progress-bar'></div>
 					<div className='column left'>
 						<div id='info-box'>
 							<div className='column left grid'>
@@ -67,12 +67,16 @@ class MusicQueue extends Component<Props> {
 
 					</div>
 				</div>
-			</div>
-		)
+			</div>)})
 	}
 	componentDidUpdate(prevProp: Props, prevState: any) {
 		if (prevState.queue !== this.state.queue) {
 			console.log("Queue changed")
+			console.log("previous: ")
+			console.log(prevState.queue)
+			console.log("current: ")
+			console.log(this.state.queue)
+			this.renderQueue(this.state.queue)
 		}
 	}
 	
@@ -82,15 +86,18 @@ class MusicQueue extends Component<Props> {
 		return <div id="title">Music Queue for {this.state.queue.channelName}</div>
 
 	}
+	renderPage() {
+		return this.state.html
+	}
 	render() {
 		return(
 			<div>
 				<div>
 
 				{this.renderTitle()}
+				{this.renderPage()}
 				<div>
 
-				{/* {this.renderFirchstTrack(this.state.queue)} */}
 				</div>
 				</div>
 			</div>
