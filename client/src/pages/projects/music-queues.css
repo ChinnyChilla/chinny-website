@@ -1,12 +1,28 @@
 .column {
 	float: left;
-	text-align: center
+	text-align: center;
+	font-size: 2vw
 }
 .left {
-	width: 60%
+	width: 40%;
+	text-align: left;
+	padding-left: 5%;
+	padding-bottom: 3%;
+	font-size: 2vw;
+}
+img {
+	max-width: 100%;
+	height: auto;
+	width: auto;
 }
 .right {
-	width: 40%
+	width: 55%;
+	font-size: 2vw;
+}
+.row {
+	border: 2px black solid;
+	text-align: center;
+	flex-direction: row;
 }
 #title {
 	text-align: center;
@@ -15,22 +31,47 @@
 	padding-top: 2%;
 	font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
+.floatleft {
+	content: var(--progress-content, "");
+	padding-top: 5px
+}
+.floatright {
+	padding-top: 5px;
+	float: right;
+}
 .progress-bar {
-	height: 3px;
+	content: var(--song-total-time, "");
+	font-size: 1.5vw;
+	background-color: red;
+	height: var(--progress-height, 3px);
 	position: relative;
-	width: 100%
+	transform: translateY(-10px);
+	float: right;
+	width: 100%;
+	text-align: right;
+}
+.link *{
+	font-size: 2vw;
+	color: rgb(9, 201, 226);
 }
 .progress-bar::after {
-	content: "";
+	content: var(--progress-content, "");
+	font-size: 1.5vw;
+	color: var(--text-color, white);
 	position: absolute;
+	text-align: var(--text-align, left);
 	left: 0;
 	top: 0;
 	bottom: 0;
+	transition: ease-in 200ms;
+	height: var(--progress-height, 6px);
 	right: calc(100% - var(--progress-percent) * 100%);
-	background-color: aqua;
+	background-color: var(--progress-color);
 }
 #song-name-1 {
-	font-size: 2vw;
+	font-size: 3vw;
+	padding-top: 1%;
+	padding-bottom: 1%;
 }
 #currently-playing {
 	display:table;

@@ -9,16 +9,16 @@ function withParams(Component: any) {
 	return (props: any) => <Component {...props} params={useParams()} />;
 }
 class MusicQueue extends Component<Props> {
-	public timer:any 
+	public progressTimer:any
+	public timeTimer:any
 	public state: any = {
 		queue: {},
 		html: null
 	}
 	public serverid = this.props.params.serverid
-	ws = new WebSocket(`wss://localhost:3000/music-queues?id=${this.serverid}`)
+	ws = new WebSocket(`ws://localhost:3000/music-queues?id=${this.serverid}`)
 
 	componentDidMount() {
-
 		
 		this.ws.onopen = () => {
 			console.log("Connected to server")
@@ -39,35 +39,84 @@ class MusicQueue extends Component<Props> {
 			console.log(evt)
 
 		}
-		this.timer = setInterval(() => {
+		this.progressTimer = setInterval(() => {
+
 			try {
 				const timeNow = new Date();
+				
 				if (this.state.queue.paused) {
 					const percent = this.state.queue.currentStreamTime / this.state.queue.firstTrack.durationMS
 					return document.documentElement.style.setProperty('--progress-percent', percent.toString())
 				}
-				const difference = Math.abs(this.state.queue.timeSongFinish - timeNow.getTime())
+				const difference = this.state.queue.timeSongFinish - timeNow.getTime()
+				const contentstring = this.changeTimeFormat(this.state.queue.firstTrack.durationMS - difference)
+				document.documentElement.style.setProperty('--progress-content', `"${contentstring}"`)
+				if (difference < 10) {
+					document.documentElement.style.setProperty('--progress-content', `"COMPLETE"`)
+					document.documentElement.style.setProperty('--text-color', "black")
+					document.documentElement.style.setProperty('--progress-color', "rgb(144, 238, 144)")
+					document.documentElement.style.setProperty('--progress-height', "30px")
+					document.documentElement.style.setProperty('--text-align', "center")
+					return document.documentElement.style.setProperty('--progress-percent', "1")
+				} else {
+					
+					
+				}
 				const str = (Math.abs(difference - this.state.queue.firstTrack.durationMS) / this.state.queue.firstTrack.durationMS).toString()
 				document.documentElement.style.setProperty('--progress-percent', str)
 			}
 			catch {
 				console.log("No queue")
 			}
-		}, 100)
+		}, 50)
+		this.timeTimer = setInterval(() => {
+			try{
+
+			}
+			catch {
+
+			}
+		})
+	}
+	changeTimeFormat(time: number) {
+		function pad2(num: number) {
+			return num.toString().padStart(2, '0')
+		}
+		var seconds = Math.floor(time / 1000)
+		var minutes = Math.floor(seconds / 60)
+		var hours = Math.floor(minutes / 60)
+		seconds = seconds % 60
+		minutes = minutes % 60
+		if (hours === 0) {
+			return `${pad2(minutes)}:${pad2(seconds)}`
+		} else {
+			return `${pad2(hours)}:${pad2(minutes)}:${pad2(seconds)}`
+		}
 	}
 	componentWillUnmount() {
-		clearInterval(this.timer)
+		clearInterval(this.progressTimer)
+		clearInterval(this.timeTimer)
 	}
 	renderQueue(queue: any) {
 		if (!queue || queue.deleted) {return this.setState({...this.state, html: null})}
 		const track = queue.firstTrack
+		var source = 'Other'
+		const YOUTUBE_REGEX = /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-_]*)(&(amp;)?‌​[\w?‌​=]*)?/
+		const SPOTIFY_REGEX = /^(https: \/\/open.spotify.com\/user\/spotify\/playlist\/|spotify:user:spotify:playlist:)([a-zA-Z0-9]+)(.*)$/
+		if (YOUTUBE_REGEX.test(track.url)) {
+			source = "Youtube"
+		} else if (SPOTIFY_REGEX.test(track.url)) {
+			source = "Spotify"
+		}
 		this.setState({
 			...this.state, html: (<div>
 				<div id="currently-playing">
-					<div className='progress-bar'></div>
+					<div className='progress-bar'><span className="floatleft"></span><span className="floatright">{this.changeTimeFormat(track.durationMS)}</span></div>
 					<div id='song-name-1'><span>{track.title}</span></div>
 					<div className='column left'>
-						<div className='thumbnail-1'><img src={track.thumbnail} alt="thumbnail" width="100" height="100"/></div>
+						<div className='thumbnail-1'><img src={track.thumbnail} alt="thumbnail"/></div>
+					</div>
+					<div className='column right'>
 						<div id='info-box'>
 							<div className='column left grid'>
 								<div className='row'>
@@ -82,13 +131,10 @@ class MusicQueue extends Component<Props> {
 									<span>{track.author}</span>
 								</div>
 								<div className='row'>
-									<span>{track.source}</span>
+									<a className='link' href={track.url}><span><u>{source}</u></span></a>
 								</div>
 							</div>
 						</div>
-					</div>
-					<div className='column right'>
-
 					</div>
 				</div>
 			</div>)})
@@ -101,6 +147,10 @@ class MusicQueue extends Component<Props> {
 			console.log("current: ")
 			console.log(this.state.queue)
 			this.renderQueue(this.state.queue)
+			document.documentElement.style.setProperty('--progress-color', "aqua")
+			document.documentElement.style.setProperty('--progress-height', "6px")
+			document.documentElement.style.setProperty('--text-align', "left")
+			document.documentElement.style.setProperty('--text-color', "white")
 		}
 	}
 	
