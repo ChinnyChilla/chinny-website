@@ -9,11 +9,16 @@ function withParams(Component: any) {
 	return (props: any) => <Component {...props} params={useParams()} />;
 }
 class MusicQueue extends Component<Props> {
+	constructor(props: any) {
+		super(props);
+		this.timeTimer = this.timeTimer.bind(this)
+	}
 	public progressTimer:any
-	public timeTimer:any
+	public timeInterval: any
 	public state: any = {
 		queue: {},
-		html: null
+		html: null,
+		progressContent: 0
 	}
 	public serverid = this.props.params.serverid
 	ws = new WebSocket(`ws://localhost:3000/music-queues?id=${this.serverid}`)
@@ -40,17 +45,15 @@ class MusicQueue extends Component<Props> {
 
 		}
 		this.progressTimer = setInterval(() => {
-
+			
 			try {
-				const timeNow = new Date();
 				
+				const timeNow = new Date();
 				if (this.state.queue.paused) {
 					const percent = this.state.queue.currentStreamTime / this.state.queue.firstTrack.durationMS
 					return document.documentElement.style.setProperty('--progress-percent', percent.toString())
 				}
 				const difference = this.state.queue.timeSongFinish - timeNow.getTime()
-				const contentstring = this.changeTimeFormat(this.state.queue.firstTrack.durationMS - difference)
-				document.documentElement.style.setProperty('--progress-content', `"${contentstring}"`)
 				if (difference < 10) {
 					document.documentElement.style.setProperty('--progress-content', `"COMPLETE"`)
 					document.documentElement.style.setProperty('--text-color', "black")
@@ -69,14 +72,25 @@ class MusicQueue extends Component<Props> {
 				console.log("No queue")
 			}
 		}, 50)
-		this.timeTimer = setInterval(() => {
-			try{
-
-			}
-			catch {
-
-			}
-		})
+		var timeInterval = setInterval(() => {
+			var contentString = this.timeTimer()
+			console.log(contentString)
+			this.setState({...this.state, progressTime: contentString})
+		}, 1000)
+		this.setState({...this.state, timeInterval: timeInterval})
+	}
+	timeTimer(){
+		try {
+			const timeNow = new Date();
+			const difference = this.state.queue.timeSongFinish - timeNow.getTime()
+			const contentstring = this.changeTimeFormat(this.state.queue.firstTrack.durationMS - difference)
+			document.documentElement.style.setProperty('--progress-content', `"${contentstring}"`)
+			return contentstring
+		}
+		catch (err) {
+			console.log(this.state)
+			console.log("no queue")
+		}
 	}
 	changeTimeFormat(time: number) {
 		function pad2(num: number) {
@@ -95,7 +109,7 @@ class MusicQueue extends Component<Props> {
 	}
 	componentWillUnmount() {
 		clearInterval(this.progressTimer)
-		clearInterval(this.timeTimer)
+		clearInterval(this.state.timeInterval)
 	}
 	renderQueue(queue: any) {
 		if (!queue || queue.deleted) {return this.setState({...this.state, html: null})}
@@ -111,7 +125,7 @@ class MusicQueue extends Component<Props> {
 		this.setState({
 			...this.state, html: (<div>
 				<div id="currently-playing">
-					<div className='progress-bar'><span className="floatleft"></span><span className="floatright">{this.changeTimeFormat(track.durationMS)}</span></div>
+					<div className='progress-bar'><span className="floatright">{this.changeTimeFormat(track.durationMS)}</span></div>
 					<div id='song-name-1'><span>{track.title}</span></div>
 					<div className='column left'>
 						<div className='thumbnail-1'><img src={track.thumbnail} alt="thumbnail"/></div>

@@ -62,7 +62,6 @@ img {
 	text-align: var(--text-align, left);
 	left: 0;
 	top: 0;
-	bottom: 0;
 	transition: ease-in 200ms;
 	height: var(--progress-height, 6px);
 	right: calc(100% - var(--progress-percent) * 100%);
