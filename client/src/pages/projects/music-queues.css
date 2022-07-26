@@ -20,7 +20,7 @@ img {
 	font-size: 3.5vmin;
 }
 .info-item {
-	border: 2px solid black;
+	border: 1px solid black;
 	padding-top: 3px;
 	padding-bottom: 3px;
 }
@@ -113,4 +113,77 @@ img {
 	width: 80%;
 	text-align: center;
 	margin: auto;
+}
+.alert-info {
+	opacity: 0;
+	margin: auto;
+	width: 0%;
+	height: 0vh;
+  	padding: 20px;
+  	background-color: #2196F3; 
+ 	color: white;
+  	margin-bottom: 15px;
+	transition: width 1.5s, height 1.5s, opacity 1s
+}
+.alert-info-active {
+	opacity: 1;
+	margin: auto;
+  	padding: 20px;
+  	background-color: #2196F3; 
+ 	color: white;
+  	margin-bottom: 15px;
+	width: 80%;
+	height: 2vh;
+	opacity: 1;
+	transition: width 1s, height 1s, opacity 2s
+}
+.queue-column-left {
+	width: 10%;
+	text-align: left;
+	padding-left: 4%;
+}
+@media screen and (max-width: 1000px) {
+	.queue-column-right {
+		width: 60%;
+		float: right;
+		font-size: 3vmin;
+		padding-right: 4px
+	}
+}
+@media screen and (min-width: 1000px) {
+	.queue-column-right {
+		width: 85%;
+		float: right;
+		font-size: 3vmin;
+	}
+}
+.queue-thumbnail {
+	padding-top: 5%;
+	width: auto;
+	max-width: fit-content;
+	height: 12vmin;
+}
+.queue-song {
+	font-size: 2vmin;
+	width: 80%;
+	border: solid black 1px;
+	height: 15vmin;
+	margin: auto;
+	margin-bottom: 20px;
+	background-color: rgba(150, 150, 150, 0.1);
+	border-radius: 25px;
+}
+.queue-thumbnail-parent {
+	height: 100%
+}
+.queue-title {
+	width: 100%;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+.index {
+	position: absolute;
+	padding-left: 1%;
+	font-size: 2vw;
 }
