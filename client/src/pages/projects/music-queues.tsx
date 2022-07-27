@@ -21,7 +21,7 @@ class MusicQueue extends Component<Props> {
 		progressContent: ""
 	}
 	public serverid = this.props.params.serverid
-	ws = new WebSocket(`wss://localhost:3000/music-queues?id=${this.serverid}`)
+	ws = new WebSocket(`wss://chinny.site/music-queues?id=${this.serverid}`)
 
 	componentDidMount() {
 		
