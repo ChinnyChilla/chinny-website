@@ -1,0 +1,41 @@
+.electrical-property {
+	display: flex;
+	height: 150px;
+}
+.electrical-left {
+	padding-left: 2%;
+	width: 800px;
+	align-items: center;
+}
+.electrical-optionbox {
+    font-family: "Times New Roman", Times, serif;
+	background-color: #666;
+    color: black;
+	padding: 0;
+	margin: 0;
+    text-align: center;
+	height: 46px;
+}
+#electrical-table {
+	border-collapse: collapse;
+}
+#electrical-table td {
+	margin: 0;
+	padding-left: 0;
+	padding-right: 0;
+	border: 1px black solid;
+}
+.electrical-input {
+    font-family: "Times New Roman", Times, serif;
+	background-color: #666;
+	width: 200px;
+	height: 40px;
+	font-size: 1em;
+	color: black;
+}
+.electrical-button {
+    font-family: "Times New Roman", Times, serif;
+    background-color: #666;
+    color: black;
+	margin-top: 20px;
+}
