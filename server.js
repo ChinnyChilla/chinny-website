@@ -94,7 +94,7 @@ app.post('/api/post/updateQueue', async (req, res) => {
 })
 
 app.post('/api/foodi/getNutrients', function (req, res) {
-	request.post('http://192.168.1.42:3000/predict', {
+	request.post('http://localhost:3000/predict', {
 		json: {
 			image: req.body.image,
 		},
