@@ -4,13 +4,13 @@
 button {
     background-color: blue;
 }
-h3 {
+.projectBlock h3 {
     font-size: 30px;
     border: 1px solid black;
     margin: 20px 0px;
     padding: 20px 0px
 }
-h3:hover {
+.projectBlock h3:hover {
     animation: shadow 400ms ease-in-out 0ms 1;
     animation-fill-mode: both;
 }

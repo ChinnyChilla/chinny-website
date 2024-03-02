@@ -7,6 +7,7 @@ const https = require('https')
 const ws = require('ws')
 const validator = require('validator');
 const parseUrl = require('parse-url')
+var request = require('request');
 const randomToken = require('random-token')
 require('dotenv').config()
 const app = express();
@@ -91,6 +92,43 @@ app.post('/api/post/updateQueue', async (req, res) => {
 		ws.send(JSON.stringify({category: 'queue', data: queue}))
 	})
 })
+
+app.post('/api/foodi/getNutrients', function (req, res) {
+	request.post('http://192.168.1.42:3000/predict', {
+		json: {
+			image: req.body.image,
+		},
+	}, (error, response, body) => {
+		if (error) {
+			console.error('Error during API call:', error);
+			res.status(500).send('Error during API call');
+		} else {
+			request.post({
+				url: "https://trackapi.nutritionix.com/v2/natural/nutrients",
+
+				headers: {
+					'Content-Type': 'application/json',
+					'x-app-id': process.env.NUTRITIONIX_APP_ID,
+					'x-app-key': process.env.NUTRITIONIX_API_KEY,
+				},
+				body: JSON.stringify({
+					query: body.prediction,
+				}),
+			}, function (error, response, body) {
+				if (error) {
+					console.error('Error during API call:', error);
+					res.status(500).send('Error during API call');
+				}
+				res.status(200).send(body);
+			})
+		};
+	});
+
+});
+
+
+
+
 wss.on('connection', (ws, inc_req) => {
 	const params = parseUrl("http://testing.com" + inc_req.url).query
 	if (!params.id) {
