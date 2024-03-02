@@ -17,7 +17,7 @@ interface NutrientFacts {
 	cholestrol: number,
 	protein: number,
 	sodium: number,
-	total_carohydrates: number,
+	total_carbohydrate: number,
 	sugars: number,
 }
 
@@ -66,7 +66,7 @@ function NutrientsTable(props: {nutrients: NutrientFacts}) {
 				<p>Cholesterol: {props.nutrients.cholestrol} mg</p>
 				<p>Protein: {props.nutrients.protein} g</p>
 				<p>Sodium: {props.nutrients.sodium} mg</p>
-				<p>Total Carbohydrates: {props.nutrients.total_carohydrates} g</p>
+				<p>Total Carbohydrates: {props.nutrients.total_carbohydrate} g</p>
 				<p>Sugars: {props.nutrients.sugars} g</p>
 		</div>
 	)
@@ -115,7 +115,7 @@ class FoodiApp extends React.Component {
 					cholestrol: firstFood.nf_cholestrol,
 					protein: firstFood.nf_protein,
 					sodium: firstFood.nf_sodium,
-					total_carohydrates: firstFood.nf_total_carohydrates,
+					total_carbohydrate: firstFood.nf_total_carbohydrate,
 					sugars: firstFood.nf_sugars,
 				}
 				this.setState({ ...this.state, currentFoodNutrients: nutrients })
