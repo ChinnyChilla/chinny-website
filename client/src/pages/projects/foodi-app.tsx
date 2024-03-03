@@ -25,12 +25,12 @@ const CameraPreview = ({ onTakePhoto }: { onTakePhoto: (dataUri: string) => void
 	const videoRef = useRef<HTMLVideoElement>(null);
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	navigator.mediaDevices
-		.getUserMedia({ video: { facingMode: 'environment'} })
+		.getUserMedia({video: { facingMode: 'environment'}})
 		.then((stream) => {
 			if (videoRef.current) {
 				videoRef.current.srcObject = stream;
 			}
-		});
+		}).catch((err) => alert("Error occured while accessing camera. Please try again."));
 
 	const handleTakePhoto = () => {
 		if (videoRef.current && canvasRef.current) {
@@ -47,7 +47,12 @@ const CameraPreview = ({ onTakePhoto }: { onTakePhoto: (dataUri: string) => void
 
 	return (
 		<div>
-			<video ref={videoRef} autoPlay playsInline style={{ maxWidth: '100%', width: '100%' }} />
+			<video
+				ref={videoRef}
+				autoPlay
+				playsInline
+				style={{ maxWidth: '100%', width: '100%' }}
+			/>
 			<button onClick={handleTakePhoto}>Take photo</button>
 			<canvas ref={canvasRef} style={{ display: 'none' }} />
 		</div>
