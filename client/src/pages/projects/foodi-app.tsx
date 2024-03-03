@@ -117,7 +117,7 @@ class FoodiApp extends React.Component {
 					serving_unit: firstFood.serving_unit,
 					calories: firstFood.nf_calories,
 					total_fat: firstFood.nf_total_fat,
-					cholestrol: firstFood.nf_cholestrol,
+					cholestrol: firstFood.nf_cholesterol,
 					protein: firstFood.nf_protein,
 					sodium: firstFood.nf_sodium,
 					total_carbohydrate: firstFood.nf_total_carbohydrate,
