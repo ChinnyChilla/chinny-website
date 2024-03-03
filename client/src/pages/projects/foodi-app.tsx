@@ -25,7 +25,7 @@ const CameraPreview = ({ onTakePhoto }: { onTakePhoto: (dataUri: string) => void
 	const videoRef = useRef<HTMLVideoElement>(null);
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	navigator.mediaDevices
-		.getUserMedia({ video: true })
+		.getUserMedia({ video: { facingMode: { exact: 'environment' } } })
 		.then((stream) => {
 			if (videoRef.current) {
 				videoRef.current.srcObject = stream;
@@ -47,7 +47,7 @@ const CameraPreview = ({ onTakePhoto }: { onTakePhoto: (dataUri: string) => void
 
 	return (
 		<div>
-			<video ref={videoRef} autoPlay style={{maxWidth: '100%', maxHeight: '100%'}}/>
+			<video ref={videoRef} autoPlay playsInline style={{maxWidth: '100%', maxHeight: '100%'}}/>
 			<button onClick={handleTakePhoto}>Take photo</button>
 			<canvas ref={canvasRef} style={{ display: 'none' }} />
 		</div>
