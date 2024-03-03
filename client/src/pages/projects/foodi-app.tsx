@@ -25,7 +25,7 @@ const CameraPreview = ({ onTakePhoto }: { onTakePhoto: (dataUri: string) => void
 	const videoRef = useRef<HTMLVideoElement>(null);
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	navigator.mediaDevices
-		.getUserMedia({ video: { facingMode: { exact: 'environment' } } })
+		.getUserMedia({ video: { facingMode: 'environment'} })
 		.then((stream) => {
 			if (videoRef.current) {
 				videoRef.current.srcObject = stream;
@@ -47,7 +47,7 @@ const CameraPreview = ({ onTakePhoto }: { onTakePhoto: (dataUri: string) => void
 
 	return (
 		<div>
-			<video ref={videoRef} autoPlay playsInline style={{maxWidth: '100%', maxHeight: '100%'}}/>
+			<video ref={videoRef} autoPlay playsInline style={{ maxWidth: '100%', width: '100%' }} />
 			<button onClick={handleTakePhoto}>Take photo</button>
 			<canvas ref={canvasRef} style={{ display: 'none' }} />
 		</div>
@@ -119,6 +119,8 @@ class FoodiApp extends React.Component {
 					sugars: firstFood.nf_sugars,
 				}
 				this.setState({ ...this.state, currentFoodNutrients: nutrients })
+			}).catch(err => {
+				alert("Error occured while fetching nutrients. Please try again.")
 			})
 		})
 	}
