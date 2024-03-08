@@ -14,6 +14,10 @@ const app = express();
 
 app.use(express.json({limit: '50mb'}));
 
+if (!fs.existsSync('./data/foodi/nutrients')) {
+	fs.mkdirSync('./data/foodi/nutrients', {recursive: true});
+}
+
 const queueToken = randomToken(16)
 console.log('Queue token is:')
 console.log(queueToken)
@@ -103,8 +107,10 @@ app.post('/api/foodi/getNutrients', function (req, res) {
 			console.error('Error during API call:', error);
 			res.status(500).send('Error during API call');
 		} else {
-			if (fs.existsSync('./data/foodi/nutrients/' + body.prediction + '.json')) {
-				res.status(200).send(fs.readFileSync('./data/foodi/nutrients/' + body.prediction + '.json', 'utf8'));
+			
+			const path = './data/foodi/nutrients/' + body.prediction + '.json';
+			if (fs.existsSync(path)) {
+				res.status(200).send(fs.readFileSync(path, 'utf8'));
 				return;
 			}
 
@@ -124,7 +130,7 @@ app.post('/api/foodi/getNutrients', function (req, res) {
 					console.error('Error during API call:', error);
 					res.status(500).send('Error during API call');
 				}
-				fs.writeFileSync('./data/foodi/nutrients/' + body.prediction + '.json', body);
+				fs.writeFileSync(path, body);
 				res.status(200).send(body);
 			})
 		};
