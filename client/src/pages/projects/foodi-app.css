@@ -1,0 +1,58 @@
+/* App.css */
+
+/* Style the existing logo */
+.App-logo {
+	height: auto;
+	max-width: 80%;
+	/* Adjust the maximum width as needed */
+	margin-bottom: 10px;
+	/* Adjust spacing as needed */
+}
+
+/* Optional: Add styling for the header or other elements as needed */
+.App-header {
+	background-color: #282c34;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	font-size: calc(8px + 2vmin);
+	/* Adjust font size as needed */
+	color: white;
+	text-align: center;
+	/* Center the text */
+}
+
+#logo-top {
+	margin-top: 75px;
+	/* Adjust spacing as needed */
+	height: auto;
+	max-width: 80%;
+	/* Adjust the maximum width as needed */
+}
+
+/* Style the loading image for spinning animation */
+.loading-image {
+	width: 20px;
+	/* Adjust the size as needed */
+	height: 20px;
+	/* Adjust the size as needed */
+	animation: spin 1s linear infinite;
+}
+
+html,
+body {
+	overflow-x: hidden;
+}
+
+/* Keyframes for spinning animation */
+@keyframes spin {
+	from {
+		transform: rotate(0deg);
+	}
+
+	to {
+		transform: rotate(360deg);
+	}
+}

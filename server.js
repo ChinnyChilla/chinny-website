@@ -7,11 +7,16 @@ const https = require('https')
 const ws = require('ws')
 const validator = require('validator');
 const parseUrl = require('parse-url')
+var request = require('request');
 const randomToken = require('random-token')
 require('dotenv').config()
 const app = express();
 
 app.use(express.json({limit: '50mb'}));
+
+if (!fs.existsSync('./data/foodi/nutrients')) {
+	fs.mkdirSync('./data/foodi/nutrients', {recursive: true});
+}
 
 const queueToken = randomToken(16)
 console.log('Queue token is:')
@@ -91,6 +96,51 @@ app.post('/api/post/updateQueue', async (req, res) => {
 		ws.send(JSON.stringify({category: 'queue', data: queue}))
 	})
 })
+
+app.post('/api/foodi/getNutrients', function (req, res) {
+	request.post('http://localhost:3000/predict', {
+		json: {
+			image: req.body.image,
+		},
+	}, (error, response, body) => {
+		if (error) {
+			console.error('Error during API call:', error);
+			res.status(500).send('Error during API call');
+		} else {
+			
+			const path = './data/foodi/nutrients/' + body.prediction + '.json';
+			if (fs.existsSync(path)) {
+				res.status(200).send(fs.readFileSync(path, 'utf8'));
+				return;
+			}
+
+			request.post({
+				url: "https://trackapi.nutritionix.com/v2/natural/nutrients",
+
+				headers: {
+					'Content-Type': 'application/json',
+					'x-app-id': process.env.NUTRITIONIX_APP_ID,
+					'x-app-key': process.env.NUTRITIONIX_API_KEY,
+				},
+				body: JSON.stringify({
+					query: body.prediction,
+				}),
+			}, function (error, response, body) {
+				if (error) {
+					console.error('Error during API call:', error);
+					res.status(500).send('Error during API call');
+				}
+				fs.writeFileSync(path, body);
+				res.status(200).send(body);
+			})
+		};
+	});
+
+});
+
+
+
+
 wss.on('connection', (ws, inc_req) => {
 	const params = parseUrl("http://testing.com" + inc_req.url).query
 	if (!params.id) {
