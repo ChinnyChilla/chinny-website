@@ -17,6 +17,7 @@ class App extends Component {
 		'Youtube Downloader',
 		'testing',
 		'Foodi App',
+		'Electrical Calculator'
 	]
 	public readonly testing = App.projectList
 
