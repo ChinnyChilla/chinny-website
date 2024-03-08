@@ -103,7 +103,7 @@ app.post('/api/foodi/getNutrients', function (req, res) {
 			console.error('Error during API call:', error);
 			res.status(500).send('Error during API call');
 		} else {
-			if (open('./data/foodi/nutrients/' + body.prediction + '.json')) {
+			if (fs.existsSync('./data/foodi/nutrients/' + body.prediction + '.json')) {
 				res.status(200).send(fs.readFileSync('./data/foodi/nutrients/' + body.prediction + '.json', 'utf8'));
 				return;
 			}
