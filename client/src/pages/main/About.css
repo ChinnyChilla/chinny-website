@@ -1,0 +1,36 @@
+#about-container {
+	position: relative;
+	/* background-image: linear-gradient(rgba(11, 11, 210, 0.424), rgba(80, 25, 109, 0.818)); */
+	overflow: auto;
+	width: 100%;
+	margin: 0;
+	height: 100vh;
+
+}
+#name {
+	position: absolute;
+	display: inline-block;
+	width: 100%;
+	margin-top: 20vh;
+	height: 10%;
+}
+.centered {
+	font-family: Georgia, 'Times New Roman', Times, serif;
+	font-style: oblique;
+	position: relative;
+	text-align: center;
+	font-size: 4em;
+	letter-spacing: 4px;
+	color: lightblue;
+}
+.social-icon {
+	margin-left: 20px;
+	position: relative;
+	margin-top: 45vh;
+}
+#scroll-down {
+	position: fixed;
+	bottom: 0;
+	left: 50%;
+	transform: translateX(-50%);
+}

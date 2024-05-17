@@ -1,0 +1,46 @@
+body,
+html {
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+.shooting-stars {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: transparent;
+	overflow: hidden;
+	z-index: 0;
+	/* Lower z-index than navbar */
+	pointer-events: none;
+	/* Allow pointer events to pass through */
+}
+
+.star {
+	position: absolute;
+	width: 4px;
+	height: 4px;
+	background: white;
+	border-radius: 50%;
+	opacity: 0;
+	animation: shooting 2s linear infinite;
+}
+
+@keyframes shooting {
+	0% {
+		opacity: 1;
+		transform: translateY(-30vh);
+		/* Start from above the viewport */
+	}
+
+	100% {
+		opacity: 0;
+		transform: translateY(100vh);
+		/* Move below the viewport */
+	}
+}
