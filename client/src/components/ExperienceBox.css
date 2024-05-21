@@ -1,0 +1,63 @@
+#experience {
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+	margin-bottom: 20px;
+}
+
+.experience-image-left,
+.experience-image-right {
+	width: 128px;
+	height: 128px;
+	
+}
+
+.experience-image-left {
+	order: 1;
+	padding-right: 10px;
+}
+
+.experience-image-right {
+	order: 3;
+	padding-left: 10px;
+}
+
+.experience-content {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	order: 2;
+}
+
+.experience-content-right {
+	align-items: flex-end;
+}
+
+.experience-title {
+	font-size: 20px;
+	font-weight: bold;
+	margin: 0;
+}
+
+.experience-location {
+	margin: 0;
+	margin-top: 2px;
+	font-style: italic;
+}
+.experience-date {
+	margin-top: 2px;
+}
+
+.experience-description {
+	margin: 0;
+}
+.experience-tech {
+	margin-top: 10px;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	font-size: 24px;
+}
+.tech-item {
+	margin-right: 3px;
+}

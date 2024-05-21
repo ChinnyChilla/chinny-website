@@ -1,0 +1,57 @@
+body,
+html {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	box-sizing: border-box;
+}
+
+.timeline-container {
+	position: relative;
+	width: 100%;
+	min-height: 100vh;
+	display: block;
+	flex-direction: column;
+	align-items: center;
+}
+
+.timeline-line {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+	/* Ensure the line doesn't interfere with other elements */
+}
+
+.timeline-line svg {
+	width: 100%;
+	height: 100%;
+}
+
+.timeline-item {
+	position: relative;
+	width: 100%;
+	display: absolute;
+	justify-content: center;
+	margin: 40px 0;
+	padding-bottom: 100px;
+	/* Increased margin for better separation */
+}
+
+.experience-box {
+	width: 30%;
+}
+
+.experience-box-left {
+	position: absolute;
+	left: 0;
+	text-align: left;
+}
+
+.experience-box-right {
+	position: absolute;
+	right: 0;
+	text-align: right;
+}

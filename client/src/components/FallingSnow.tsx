@@ -13,7 +13,7 @@ const FallingSnow: React.FC = () => {
 				star.style.top = `${Math.random() * 50}vh`;
 				star.style.left = `${Math.random() * 100}vw`;
 				star.style.animationDelay = `${Math.random() * 10}s`;
-				star.style.animationDuration = `${Math.random() * 2 + 10}s`;
+				star.style.animationDuration = `${Math.random() * 5 + 10}s`;
 				shootingStarsContainer.appendChild(star);
 			}
 		}
