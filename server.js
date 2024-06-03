@@ -18,9 +18,7 @@ if (!fs.existsSync('./data/foodi/nutrients')) {
 	fs.mkdirSync('./data/foodi/nutrients', {recursive: true});
 }
 
-const queueToken = randomToken(16)
-console.log('Queue token is:')
-console.log(queueToken)
+const queueToken = process.env.QUEUE_TOKEN
 var limiter = rateLimit({
 	
 	windowsMs: 60000,
